@@ -23,16 +23,12 @@
   "composites": [
     {
       "name": "From",
-      "children": [
-        "Airport"
-      ],
+      "children": ["Airport"],
       "roles": []
     },
     {
       "name": "To",
-      "children": [
-        "Airport"
-      ],
+      "children": ["Airport"],
       "roles": []
     }
   ],
@@ -42,38 +38,23 @@
       "subLists": [
         {
           "canonicalForm": "Paris",
-          "list": [
-            "paris",
-            "cdg"
-          ]
+          "list": ["paris", "cdg"]
         },
         {
           "canonicalForm": "London",
-          "list": [
-            "london",
-            "lhr"
-          ]
+          "list": ["london", "lhr"]
         },
         {
           "canonicalForm": "Berlin",
-          "list": [
-            "berlin",
-            "txl"
-          ]
+          "list": ["berlin", "txl"]
         },
         {
           "canonicalForm": "New York",
-          "list": [
-            "new york",
-            "jfk"
-          ]
+          "list": ["new york", "jfk"]
         },
         {
           "canonicalForm": "Seattle",
-          "list": [
-            "seattle",
-            "sea"
-          ]
+          "list": ["seattle", "sea"]
         }
       ],
       "roles": []
