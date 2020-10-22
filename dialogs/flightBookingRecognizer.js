@@ -49,10 +49,6 @@ class FlightBookingRecognizer {
     return { to: toValue, airport: toAirportValue };
   }
 
-  /**
-   * This value will be a TIMEX. And we are only interested in a Date so grab the first result and drop the Time part.
-   * TIMEX is a format that represents DateTime expressions that include some ambiguity. e.g. missing a Year.
-   */
   getTravelDate(result) {
     const datetimeEntity = result.entities.datetime;
     if (!datetimeEntity || !datetimeEntity[0]) return undefined;

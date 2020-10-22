@@ -35,14 +35,12 @@ class BookingDialog extends CancelAndHelpDialog {
     this.initialDialogId = WATERFALL_DIALOG;
   }
 
-  /**
-   * If a destination city has not been provided, prompt for one.
-   */
+  // Se uma cidade não estiver definida.
   async destinationStep(stepContext) {
     const bookingDetails = stepContext.options;
 
     if (!bookingDetails.destination) {
-      const messageText = 'To what city would you like to travel?';
+      const messageText = 'Para qual cidade voce gostaria de viajar?';
       const msg = MessageFactory.text(
         messageText,
         messageText,
@@ -53,13 +51,10 @@ class BookingDialog extends CancelAndHelpDialog {
     return await stepContext.next(bookingDetails.destination);
   }
 
-  /**
-   * If an origin city has not been provided, prompt for one.
-   */
+  // Quando uma cidade de origem não estiver definida
   async originStep(stepContext) {
     const bookingDetails = stepContext.options;
 
-    // Capture the response to the previous step's prompt
     bookingDetails.destination = stepContext.result;
     if (!bookingDetails.origin) {
       const messageText = 'From what city will you be travelling?';
@@ -93,13 +88,10 @@ class BookingDialog extends CancelAndHelpDialog {
     return await stepContext.next(bookingDetails.travelDate);
   }
 
-  /**
-   * Confirm the information the user has provided.
-   */
+  //Confirmando a informação dada pelo usuário
   async confirmStep(stepContext) {
     const bookingDetails = stepContext.options;
 
-    // Capture the results of the previous step
     bookingDetails.travelDate = stepContext.result;
     const messageText = `Please confirm, I have you traveling to: ${bookingDetails.destination} from: ${bookingDetails.origin} on: ${bookingDetails.travelDate}. Is this correct?`;
     const msg = MessageFactory.text(
@@ -108,13 +100,9 @@ class BookingDialog extends CancelAndHelpDialog {
       InputHints.ExpectingInput
     );
 
-    // Offer a YES/NO prompt.
     return await stepContext.prompt(CONFIRM_PROMPT, { prompt: msg });
   }
 
-  /**
-   * Complete the interaction and end the dialog.
-   */
   async finalStep(stepContext) {
     if (stepContext.result === true) {
       const bookingDetails = stepContext.options;
@@ -125,7 +113,7 @@ class BookingDialog extends CancelAndHelpDialog {
 
   isAmbiguous(timex) {
     const timexPropery = new TimexProperty(timex);
-    return !timexPropery.types.has('definite');
+    return !timexPropery.types.has('Definido');
   }
 }
 

@@ -19,7 +19,6 @@ class DialogAndWelcomeBot extends DialogBot {
         }
       }
 
-      // By calling next() you ensure that the next BotHandler is run.
       await next();
     });
   }

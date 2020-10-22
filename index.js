@@ -17,7 +17,7 @@ const {
   FlightBookingRecognizer,
 } = require('./dialogs/flightBookingRecognizer');
 
-// This bot's main dialog.
+// O diálogo principal do bot
 const { DialogAndWelcomeBot } = require('./bots/dialogAndWelcomeBot');
 const { MainDialog } = require('./dialogs/mainDialog');
 
@@ -25,32 +25,18 @@ const { MainDialog } = require('./dialogs/mainDialog');
 const { BookingDialog } = require('./dialogs/bookingDialog');
 const BOOKING_DIALOG = 'bookingDialog';
 
+// Adaptador
 const adapter = new BotFrameworkAdapter({
   appId: process.env.MicrosoftAppId,
   appPassword: process.env.MicrosoftAppPassword,
 });
 
-// Catch-all for errors.
+// Procura por Erros.
 const onTurnErrorHandler = async (context, error) => {
   console.error(`\n [onTurnError] unhandled error: ${error}`);
 
-  // Send a trace activity, which will be displayed in Bot Framework Emulator
-  await context.sendTraceActivity(
-    'OnTurnError Trace',
-    `${error}`,
-    'https://www.botframework.com/schemas/error',
-    'TurnError'
-  );
-
-  // Send a message to the user
-  let onTurnErrorMessage = 'The bot encountered an error or bug.';
-  await context.sendActivity(
-    onTurnErrorMessage,
-    onTurnErrorMessage,
-    InputHints.ExpectingInput
-  );
-  onTurnErrorMessage =
-    'To continue to run this bot, please fix the bot source code.';
+  // Manda uma mensagem para o Usuário
+  let onTurnErrorMessage = 'O Bot encontrou um Erro/Bug.';
   await context.sendActivity(
     onTurnErrorMessage,
     onTurnErrorMessage,
@@ -66,7 +52,7 @@ const memoryStorage = new MemoryStorage();
 const conversationState = new ConversationState(memoryStorage);
 const userState = new UserState(memoryStorage);
 
-// If configured, pass in the FlightBookingRecognizer.  (Defining it externally allows it to be mocked for tests)
+// If configured, pass in the FlightBookingRecognizer.
 const { LuisAppId, LuisAPIKey, LuisAPIHostName } = process.env;
 const luisConfig = {
   applicationId: LuisAppId,
@@ -76,38 +62,32 @@ const luisConfig = {
 
 const luisRecognizer = new FlightBookingRecognizer(luisConfig);
 
-// Create the main dialog.
+// Cria o Dialogo Principal.
 const bookingDialog = new BookingDialog(BOOKING_DIALOG);
 const dialog = new MainDialog(luisRecognizer, bookingDialog);
 const bot = new DialogAndWelcomeBot(conversationState, userState, dialog);
 
-// Create HTTP server
+// Cria o Server
 const server = restify.createServer();
 server.listen(process.env.port || process.env.PORT || 3978, function () {
-  console.log(`\n${server.name} listening to ${server.url}`);
+  console.log(`\n${server.name} ouvindo na porta: ${server.url}`);
 });
 
 server.post('/api/messages', (req, res) => {
-  // Route received a request to adapter for processing
   adapter.processActivity(req, res, async (turnContext) => {
-    // route to bot activity handler.
     await bot.run(turnContext);
   });
 });
 
 // Listen for Upgrade requests for Streaming.
 server.on('upgrade', (req, socket, head) => {
-  // Create an adapter scoped to this WebSocket connection to allow storing session data.
   const streamingAdapter = new BotFrameworkAdapter({
     appId: process.env.MicrosoftAppId,
     appPassword: process.env.MicrosoftAppPassword,
   });
-  // Set onTurnError for the BotFrameworkAdapter created for each connection.
   streamingAdapter.onTurnError = onTurnErrorHandler;
 
   streamingAdapter.useWebSocket(req, socket, head, async (context) => {
-    // After connecting via WebSocket, run this logic for every request sent over
-    // the WebSocket connection.
     await bot.run(context);
   });
 });
