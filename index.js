@@ -11,13 +11,18 @@ const {
 } = require('botbuilder');
 const {
   FlightBookingRecognizer,
-} = require('./dialogs/flightBookingRecognizer');
+} = require('./dialogs/Booking/flightBookingRecognizer');
 const { DialogAndWelcomeBot } = require('./bots/dialogAndWelcomeBot');
 const { MainDialog } = require('./dialogs/mainDialog');
 
-// Dialogos do Bot
-const { BookingDialog } = require('./dialogs/bookingDialog');
+// Dialogos
+const { BookingDialog } = require('./dialogs/Booking/Booking');
+const {
+  GymOpeningDaysDialog,
+} = require('./dialogs/GymOpeningDays/GymOpeningDays');
+
 const BOOKING_DIALOG = 'bookingDialog';
+const GYM_OPENING_DAYS_DIALOG = 'gymOpeningDaysDialog';
 
 // Adaptador
 const adapter = new BotFrameworkAdapter({
@@ -56,9 +61,14 @@ const luisConfig = {
 
 const luisRecognizer = new FlightBookingRecognizer(luisConfig);
 
-// Cria os Dialogos Principais.
 const bookingDialog = new BookingDialog(BOOKING_DIALOG);
-const dialog = new MainDialog(luisRecognizer, bookingDialog);
+const gymOpeningDaysDialog = new GymOpeningDaysDialog(GYM_OPENING_DAYS_DIALOG);
+const dialog = new MainDialog(
+  luisRecognizer,
+  bookingDialog,
+  gymOpeningDaysDialog
+);
+
 const bot = new DialogAndWelcomeBot(conversationState, userState, dialog);
 
 // Cria o Server

@@ -1,6 +1,3 @@
-const {
-  TimexProperty,
-} = require('@microsoft/recognizers-text-data-types-timex-expression');
 const { MessageFactory, InputHints } = require('botbuilder');
 const { LuisRecognizer } = require('botbuilder-ai');
 const {
@@ -14,7 +11,7 @@ const {
 const MAIN_WATERFALL_DIALOG = 'mainWaterfallDialog';
 
 class MainDialog extends ComponentDialog {
-  constructor(luisRecognizer, bookingDialog) {
+  constructor(luisRecognizer, bookingDialog, gymOpeningDaysDialog) {
     super('MainDialog');
 
     if (!luisRecognizer)
@@ -27,9 +24,13 @@ class MainDialog extends ComponentDialog {
     if (!bookingDialog)
       throw new Error("Missing parameter 'bookingDialog' is required");
 
+    if (!gymOpeningDaysDialog)
+      throw new Error("Missing parameter 'gymOpeningDaysDialog' is required");
+
     // Se o dialogo não existir.
     this.addDialog(new TextPrompt('TextPrompt'))
       .addDialog(bookingDialog)
+      .addDialog(gymOpeningDaysDialog)
       .addDialog(
         new WaterfallDialog(MAIN_WATERFALL_DIALOG, [
           this.introStep.bind(this),
@@ -75,12 +76,16 @@ class MainDialog extends ComponentDialog {
     return await stepContext.prompt('TextPrompt', { prompt: promptMessage });
   }
 
-  // Second step in the waterfall.  This will use LUIS to attempt to extract the origin, destination and travel dates.
   async actStep(stepContext) {
     const bookingDetails = {};
+    const gymOpeningDaysDetails = {};
 
     if (!this.luisRecognizer.isConfigured) {
       return await stepContext.beginDialog('bookingDialog', bookingDetails);
+      return await stepContext.beginDialog(
+        'gymOpeningDaysDialog',
+        gymOpeningDaysDetails
+      );
     }
 
     const luisResult = await this.luisRecognizer.executeLuisQuery(
@@ -95,13 +100,13 @@ class MainDialog extends ComponentDialog {
         // Faz o reconhecimento da entidade
         bookingDetails.destination = toEntities.airport;
         bookingDetails.origin = fromEntities.airport;
-        bookingDetails.travelDate = this.luisRecognizer.getTravelDate(
-          luisResult
-        );
 
         console.log('Detalhes Extraidos:', JSON.stringify(bookingDetails));
 
         return await stepContext.beginDialog('bookingDialog', bookingDetails);
+      }
+
+      case 'GymOpeningDays': {
       }
 
       // Intenções ainda não cadastradas.
@@ -124,11 +129,7 @@ class MainDialog extends ComponentDialog {
   async finalStep(stepContext) {
     if (stepContext.result) {
       const result = stepContext.result;
-      const timeProperty = new TimexProperty(result.travelDate);
-      const travelDateMsg = timeProperty.toNaturalLanguage(
-        new Date(Date.now())
-      );
-      const msg = `I have you booked to ${result.destination} from ${result.origin} on ${travelDateMsg}.`;
+      const msg = `I have you booked to ${result.destination} from ${result.origin}.`;
       await stepContext.context.sendActivity(
         msg,
         msg,

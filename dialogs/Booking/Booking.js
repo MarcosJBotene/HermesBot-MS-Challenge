@@ -7,10 +7,10 @@ const {
   TextPrompt,
   WaterfallDialog,
 } = require('botbuilder-dialogs');
-const { CancelAndHelpDialog } = require('./cancelAndHelpDialog');
+const { CancelAndHelpDialog } = require('../cancelAndHelpDialog');
 
-const CONFIRM_PROMPT = 'confirmPrompt';
 const TEXT_PROMPT = 'textPrompt';
+const CONFIRM_PROMPT = 'confirmPrompt';
 const WATERFALL_DIALOG = 'waterfallDialog';
 
 class BookingDialog extends CancelAndHelpDialog {
@@ -23,7 +23,6 @@ class BookingDialog extends CancelAndHelpDialog {
         new WaterfallDialog(WATERFALL_DIALOG, [
           this.destinationStep.bind(this),
           this.originStep.bind(this),
-          this.travelDateStep.bind(this),
           this.confirmStep.bind(this),
           this.finalStep.bind(this),
         ])
@@ -54,10 +53,10 @@ class BookingDialog extends CancelAndHelpDialog {
 
     bookingDetails.destination = stepContext.result;
     if (!bookingDetails.origin) {
-      const messageText = 'From what city will you be travelling?';
+      const messageText = 'Para qual País voce está viajando?';
       const msg = MessageFactory.text(
         messageText,
-        'From what city will you be travelling?',
+        'Para qual País voce está viajando?',
         InputHints.ExpectingInput
       );
       return await stepContext.prompt(TEXT_PROMPT, { prompt: msg });
@@ -65,28 +64,12 @@ class BookingDialog extends CancelAndHelpDialog {
     return await stepContext.next(bookingDetails.origin);
   }
 
-  async travelDateStep(stepContext) {
-    const bookingDetails = stepContext.options;
-
-    // Capture the results of the previous step
-    bookingDetails.origin = stepContext.result;
-    if (
-      !bookingDetails.travelDate ||
-      this.isAmbiguous(bookingDetails.travelDate)
-    ) {
-      return await stepContext.beginDialog(DATE_RESOLVER_DIALOG, {
-        date: bookingDetails.travelDate,
-      });
-    }
-    return await stepContext.next(bookingDetails.travelDate);
-  }
-
   //Confirmando a informação dada pelo usuário
   async confirmStep(stepContext) {
     const bookingDetails = stepContext.options;
 
     bookingDetails.travelDate = stepContext.result;
-    const messageText = `Please confirm, I have you traveling to: ${bookingDetails.destination} from: ${bookingDetails.origin} on: ${bookingDetails.travelDate}. Is this correct?`;
+    const messageText = `Please confirm, I have you traveling to: ${bookingDetails.destination}, from: ${bookingDetails.travelDate}. Is this correct?`;
     const msg = MessageFactory.text(
       messageText,
       messageText,

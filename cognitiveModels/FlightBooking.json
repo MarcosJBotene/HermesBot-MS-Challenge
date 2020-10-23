@@ -22,7 +22,7 @@
       "name": "GymOpeningDays",
       "features": [
         {
-          "modelName": "Open",
+          "modelName": "GymIsOpen",
           "isRequired": false
         }
       ]
@@ -45,12 +45,12 @@
       ]
     },
     {
-      "name": "Open",
+      "name": "GymIsOpen",
       "children": [],
       "roles": [],
       "features": [
         {
-          "modelName": "wordsOpen",
+          "modelName": "KeyWordsDays",
           "isRequired": false
         }
       ]
@@ -75,41 +75,37 @@
       "subLists": [
         {
           "canonicalForm": "Paris",
-          "list": ["paris", "cdg"]
+          "list": ["paris"]
         },
         {
           "canonicalForm": "London",
-          "list": ["london", "lhr"]
+          "list": ["london"]
         },
         {
           "canonicalForm": "Berlin",
-          "list": ["berlin", "txl"]
+          "list": ["berlin"]
         },
         {
           "canonicalForm": "New York",
-          "list": ["new york", "jfk"]
+          "list": ["new york"]
         },
         {
           "canonicalForm": "Seattle",
-          "list": ["seattle", "sea"]
+          "list": ["seattle"]
         }
       ],
       "roles": []
     },
     {
-      "name": "wordsOpen",
+      "name": "KeyWordsDays",
       "subLists": [
-        {
-          "canonicalForm": "Horarios",
-          "list": ["horários", "ahah"]
-        },
         {
           "canonicalForm": "Horario",
           "list": ["horario"]
         },
         {
-          "canonicalForm": "Abre",
-          "list": ["abre"]
+          "canonicalForm": "Horarios",
+          "list": ["horarios"]
         },
         {
           "canonicalForm": "Hoje",
@@ -126,50 +122,35 @@
         {
           "canonicalForm": "Dias",
           "list": ["dias"]
+        },
+        {
+          "canonicalForm": "Abre",
+          "list": ["abre"]
+        },
+        {
+          "canonicalForm": "Fecha",
+          "list": ["fecha"]
         }
       ],
       "roles": []
     }
   ],
-  "prebuiltEntities": [
-    {
-      "name": "datetimeV2",
-      "roles": []
-    }
-  ],
+  "prebuiltEntities": [],
   "utterances": [
     {
-      "text": "a academia está aberta hoje?",
+      "text": "abre hoje?",
       "intent": "GymOpeningDays",
       "entities": [
         {
-          "entity": "Open",
-          "startPos": 16,
-          "endPos": 21,
+          "entity": "GymIsOpen",
+          "startPos": 0,
+          "endPos": 3,
           "children": []
         },
         {
-          "entity": "Open",
-          "startPos": 23,
-          "endPos": 26,
-          "children": []
-        }
-      ]
-    },
-    {
-      "text": "a academia está fechada hoje?",
-      "intent": "GymOpeningDays",
-      "entities": [
-        {
-          "entity": "Open",
-          "startPos": 16,
-          "endPos": 22,
-          "children": []
-        },
-        {
-          "entity": "Open",
-          "startPos": 24,
-          "endPos": 27,
+          "entity": "GymIsOpen",
+          "startPos": 5,
+          "endPos": 8,
           "children": []
         }
       ]
@@ -262,9 +243,28 @@
       "entities": []
     },
     {
-      "text": "cancel booking",
-      "intent": "Cancel",
-      "entities": []
+      "text": "está aberta?",
+      "intent": "GymOpeningDays",
+      "entities": [
+        {
+          "entity": "GymIsOpen",
+          "startPos": 5,
+          "endPos": 10,
+          "children": []
+        }
+      ]
+    },
+    {
+      "text": "está fechada?",
+      "intent": "GymOpeningDays",
+      "entities": [
+        {
+          "entity": "GymIsOpen",
+          "startPos": 5,
+          "endPos": 11,
+          "children": []
+        }
+      ]
     },
     {
       "text": "exit",
@@ -325,39 +325,58 @@
       ]
     },
     {
-      "text": "i'd like to rent a car",
-      "intent": "None",
-      "entities": []
-    },
-    {
-      "text": "ignore",
-      "intent": "Cancel",
-      "entities": []
-    },
-    {
-      "text": "quais os dias da semana que a academia está aberta?",
+      "text": "hoje a academia abre?",
       "intent": "GymOpeningDays",
       "entities": [
         {
-          "entity": "Open",
-          "startPos": 9,
-          "endPos": 12,
+          "entity": "GymIsOpen",
+          "startPos": 0,
+          "endPos": 3,
           "children": []
         },
         {
-          "entity": "Open",
-          "startPos": 44,
-          "endPos": 49,
+          "entity": "GymIsOpen",
+          "startPos": 16,
+          "endPos": 19,
           "children": []
         }
       ]
+    },
+    {
+      "text": "horario de funcionamento",
+      "intent": "GymOpeningDays",
+      "entities": [
+        {
+          "entity": "GymIsOpen",
+          "startPos": 0,
+          "endPos": 6,
+          "children": []
+        }
+      ]
+    },
+    {
+      "text": "horarios de funcionamento?",
+      "intent": "GymOpeningDays",
+      "entities": [
+        {
+          "entity": "GymIsOpen",
+          "startPos": 0,
+          "endPos": 7,
+          "children": []
+        }
+      ]
+    },
+    {
+      "text": "i'd like to rent a car",
+      "intent": "None",
+      "entities": []
     },
     {
       "text": "quais os dias de funcionamento da academia?",
       "intent": "GymOpeningDays",
       "entities": [
         {
-          "entity": "Open",
+          "entity": "GymIsOpen",
           "startPos": 9,
           "endPos": 12,
           "children": []
@@ -369,13 +388,13 @@
       "intent": "GymOpeningDays",
       "entities": [
         {
-          "entity": "Open",
+          "entity": "GymIsOpen",
           "startPos": 9,
           "endPos": 12,
           "children": []
         },
         {
-          "entity": "Open",
+          "entity": "GymIsOpen",
           "startPos": 29,
           "endPos": 32,
           "children": []
@@ -383,43 +402,13 @@
       ]
     },
     {
-      "text": "quais os dias que a academia está aberta?",
+      "text": "quais os horarios de funcionamento da academia?",
       "intent": "GymOpeningDays",
       "entities": [
         {
-          "entity": "Open",
+          "entity": "GymIsOpen",
           "startPos": 9,
-          "endPos": 12,
-          "children": []
-        },
-        {
-          "entity": "Open",
-          "startPos": 34,
-          "endPos": 39,
-          "children": []
-        }
-      ]
-    },
-    {
-      "text": "quais são os horários de funcionamento da academia?",
-      "intent": "GymOpeningDays",
-      "entities": [
-        {
-          "entity": "Open",
-          "startPos": 13,
-          "endPos": 20,
-          "children": []
-        }
-      ]
-    },
-    {
-      "text": "quando a academia abre?",
-      "intent": "GymOpeningDays",
-      "entities": [
-        {
-          "entity": "Open",
-          "startPos": 18,
-          "endPos": 21,
+          "endPos": 16,
           "children": []
         }
       ]
@@ -429,7 +418,7 @@
       "intent": "GymOpeningDays",
       "entities": [
         {
-          "entity": "Open",
+          "entity": "GymIsOpen",
           "startPos": 7,
           "endPos": 10,
           "children": []
@@ -437,37 +426,31 @@
       ]
     },
     {
-      "text": "que dias a academia está aberta?",
+      "text": "quando fecha?",
       "intent": "GymOpeningDays",
       "entities": [
         {
-          "entity": "Open",
-          "startPos": 4,
-          "endPos": 7,
-          "children": []
-        },
-        {
-          "entity": "Open",
-          "startPos": 25,
-          "endPos": 30,
+          "entity": "GymIsOpen",
+          "startPos": 7,
+          "endPos": 11,
           "children": []
         }
       ]
     },
     {
-      "text": "que dias da semana a academia está aberta?",
+      "text": "ta aberta hoje?",
       "intent": "GymOpeningDays",
       "entities": [
         {
-          "entity": "Open",
-          "startPos": 4,
-          "endPos": 7,
+          "entity": "GymIsOpen",
+          "startPos": 3,
+          "endPos": 8,
           "children": []
         },
         {
-          "entity": "Open",
-          "startPos": 35,
-          "endPos": 40,
+          "entity": "GymIsOpen",
+          "startPos": 10,
+          "endPos": 13,
           "children": []
         }
       ]
@@ -477,7 +460,7 @@
       "intent": "GymOpeningDays",
       "entities": [
         {
-          "entity": "Open",
+          "entity": "GymIsOpen",
           "startPos": 3,
           "endPos": 8,
           "children": []
@@ -485,11 +468,29 @@
       ]
     },
     {
-      "text": "ta fechada ?",
+      "text": "ta fechada hoje?",
       "intent": "GymOpeningDays",
       "entities": [
         {
-          "entity": "Open",
+          "entity": "GymIsOpen",
+          "startPos": 3,
+          "endPos": 9,
+          "children": []
+        },
+        {
+          "entity": "GymIsOpen",
+          "startPos": 11,
+          "endPos": 14,
+          "children": []
+        }
+      ]
+    },
+    {
+      "text": "ta fechada?",
+      "intent": "GymOpeningDays",
+      "entities": [
+        {
+          "entity": "GymIsOpen",
           "startPos": 3,
           "endPos": 9,
           "children": []
