@@ -29,7 +29,6 @@ class MainDialog extends ComponentDialog {
 
     // Se o dialogo não existir.
     this.addDialog(new TextPrompt('TextPrompt'))
-      .addDialog(bookingDialog)
       .addDialog(gymOpeningDaysDialog)
       .addDialog(
         new WaterfallDialog(MAIN_WATERFALL_DIALOG, [
@@ -82,6 +81,9 @@ class MainDialog extends ComponentDialog {
 
     if (!this.luisRecognizer.isConfigured) {
       return await stepContext.beginDialog('bookingDialog', bookingDetails);
+    }
+
+    if (!this.luisRecognizer.isConfigured) {
       return await stepContext.beginDialog(
         'gymOpeningDaysDialog',
         gymOpeningDaysDetails
@@ -107,6 +109,21 @@ class MainDialog extends ComponentDialog {
       }
 
       case 'GymOpeningDays': {
+        const isGymOpenEntities = this.luisRecognizer.getGymIsOpenEntities(
+          luisResult
+        );
+
+        gymOpeningDaysDetails = isGymOpenEntities.keyWordsDays;
+
+        console.log(
+          'Detalhes Extraidos:',
+          JSON.stringify(gymOpeningDaysDetails)
+        );
+
+        return await stepContext.beginDialog(
+          'gymOpeningDaysDialog',
+          gymOpeningDaysDetails
+        );
       }
 
       // Intenções ainda não cadastradas.

@@ -17,16 +17,14 @@ class FlightBookingRecognizer {
     return this.recognizer !== undefined;
   }
 
-  /**
-   * Returns an object with preformatted LUIS results for the bot's dialogs to consume.
-   * @param {TurnContext} context
-   */
   async executeLuisQuery(context) {
     return await this.recognizer.recognize(context);
   }
 
   getFromEntities(result) {
     let fromValue, fromAirportValue;
+
+    // $instance.From → Pega Entidade.
     if (result.entities.$instance.From) {
       fromValue = result.entities.$instance.From[0].text;
     }

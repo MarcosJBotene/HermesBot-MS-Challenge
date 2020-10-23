@@ -9,9 +9,15 @@ const {
   MemoryStorage,
   UserState,
 } = require('botbuilder');
+
+// Recognizers
 const {
   FlightBookingRecognizer,
 } = require('./dialogs/Booking/flightBookingRecognizer');
+const {
+  GymOpeningDaysRecognizer,
+} = require('./dialogs/GymOpeningDays/GymOpeningDaysRecognizer');
+
 const { DialogAndWelcomeBot } = require('./bots/dialogAndWelcomeBot');
 const { MainDialog } = require('./dialogs/mainDialog');
 
@@ -51,7 +57,7 @@ const memoryStorage = new MemoryStorage();
 const conversationState = new ConversationState(memoryStorage);
 const userState = new UserState(memoryStorage);
 
-// If configured, pass in the FlightBookingRecognizer.
+// Se o LUIS estiver configurado, passa para os Recognizers.
 const { LuisAppId, LuisAPIKey, LuisAPIHostName } = process.env;
 const luisConfig = {
   applicationId: LuisAppId,
@@ -59,12 +65,14 @@ const luisConfig = {
   endpoint: `https://${LuisAPIHostName}`,
 };
 
-const luisRecognizer = new FlightBookingRecognizer(luisConfig);
+const luisRecognizerBooking = new FlightBookingRecognizer(luisConfig);
+const luisRecognizerGymOpeningDays = new GymOpeningDaysRecognizer(luisConfig);
 
 const bookingDialog = new BookingDialog(BOOKING_DIALOG);
 const gymOpeningDaysDialog = new GymOpeningDaysDialog(GYM_OPENING_DAYS_DIALOG);
 const dialog = new MainDialog(
-  luisRecognizer,
+  luisRecognizerBooking,
+  luisRecognizerGymOpeningDays,
   bookingDialog,
   gymOpeningDaysDialog
 );
