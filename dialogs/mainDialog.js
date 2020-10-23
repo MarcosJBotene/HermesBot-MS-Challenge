@@ -41,12 +41,6 @@ class MainDialog extends ComponentDialog {
     this.initialDialogId = MAIN_WATERFALL_DIALOG;
   }
 
-  /**
-   * The run method handles the incoming activity (in the form of a TurnContext) and passes it through the dialog system.
-   * If no dialog is active, it will start the default dialog.
-   * @param {*} turnContext
-   * @param {*} accessor
-   */
   async run(turnContext, accessor) {
     const dialogSet = new DialogSet(accessor);
     dialogSet.add(this);
@@ -125,29 +119,6 @@ class MainDialog extends ComponentDialog {
 
     return await stepContext.next();
   }
-
-  // // Mostrar um aviso para cidades nao suportadas.
-  // async showWarningForUnsupportedCities(context, fromEntities, toEntities) {
-  //   const unsupportedCities = [];
-  //   if (fromEntities.from && !fromEntities.airport) {
-  //     unsupportedCities.push(fromEntities.from);
-  //   }
-
-  //   if (toEntities.to && !toEntities.airport) {
-  //     unsupportedCities.push(toEntities.to);
-  //   }
-
-  //   if (unsupportedCities.length) {
-  //     const messageText = `Aeroportos não suportados: ${unsupportedCities.join(
-  //       ', '
-  //     )}`;
-  //     await context.sendActivity(
-  //       messageText,
-  //       messageText,
-  //       InputHints.IgnoringInput
-  //     );
-  //   }
-  // }
 
   // Retorna o pedido do Usuário.
   async finalStep(stepContext) {

@@ -1,5 +1,5 @@
 const { InputHints } = require('botbuilder');
-const { ComponentDialog, DialogTurnStatus } = require('botbuilder-dialogs');
+const { ComponentDialog } = require('botbuilder-dialogs');
 
 class CancelAndHelpDialog extends ComponentDialog {
   async onContinueDialog(innerDc) {
@@ -14,17 +14,8 @@ class CancelAndHelpDialog extends ComponentDialog {
     if (innerDc.context.activity.text) {
       const text = innerDc.context.activity.text.toLowerCase();
 
+      // Calcela um Dialogo.
       switch (text) {
-        case 'help':
-        case '?': {
-          const helpMessageText = 'Ajuda aqui';
-          await innerDc.context.sendActivity(
-            helpMessageText,
-            helpMessageText,
-            InputHints.ExpectingInput
-          );
-          return { status: DialogTurnStatus.waiting };
-        }
         case 'cancel':
         case 'quit': {
           const cancelMessageText = 'Cancelando...';

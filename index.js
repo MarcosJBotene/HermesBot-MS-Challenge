@@ -1,10 +1,7 @@
 const path = require('path');
-
 const ENV_FILE = path.join(__dirname, '.env');
 require('dotenv').config({ path: ENV_FILE });
-
 const restify = require('restify');
-
 const {
   BotFrameworkAdapter,
   ConversationState,
@@ -12,12 +9,9 @@ const {
   MemoryStorage,
   UserState,
 } = require('botbuilder');
-
 const {
   FlightBookingRecognizer,
 } = require('./dialogs/flightBookingRecognizer');
-
-// O diálogo principal do bot
 const { DialogAndWelcomeBot } = require('./bots/dialogAndWelcomeBot');
 const { MainDialog } = require('./dialogs/mainDialog');
 
@@ -76,18 +70,5 @@ server.listen(process.env.port || process.env.PORT || 3978, function () {
 server.post('/api/messages', (req, res) => {
   adapter.processActivity(req, res, async (turnContext) => {
     await bot.run(turnContext);
-  });
-});
-
-// Listen for Upgrade requests for Streaming.
-server.on('upgrade', (req, socket, head) => {
-  const streamingAdapter = new BotFrameworkAdapter({
-    appId: process.env.MicrosoftAppId,
-    appPassword: process.env.MicrosoftAppPassword,
-  });
-  streamingAdapter.onTurnError = onTurnErrorHandler;
-
-  streamingAdapter.useWebSocket(req, socket, head, async (context) => {
-    await bot.run(context);
   });
 });

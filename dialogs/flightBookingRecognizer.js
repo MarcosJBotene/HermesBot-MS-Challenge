@@ -48,17 +48,6 @@ class FlightBookingRecognizer {
 
     return { to: toValue, airport: toAirportValue };
   }
-
-  getTravelDate(result) {
-    const datetimeEntity = result.entities.datetime;
-    if (!datetimeEntity || !datetimeEntity[0]) return undefined;
-
-    const timex = datetimeEntity[0].timex;
-    if (!timex || !timex[0]) return undefined;
-
-    const datetime = timex[0].split('T')[0];
-    return datetime;
-  }
 }
 
 module.exports.FlightBookingRecognizer = FlightBookingRecognizer;
