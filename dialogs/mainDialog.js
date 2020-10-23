@@ -23,13 +23,11 @@ class MainDialog extends ComponentDialog {
       );
     this.luisRecognizer = luisRecognizer;
 
+    // Se o dialogo não existir.
     if (!bookingDialog)
-      throw new Error(
-        "[MainDialog]: Missing parameter 'bookingDialog' is required"
-      );
+      throw new Error("Missing parameter 'bookingDialog' is required");
 
-    // Define the main dialog and its related components.
-    // This is a sample "book a flight" dialog.
+    // Se o dialogo não existir.
     this.addDialog(new TextPrompt('TextPrompt'))
       .addDialog(bookingDialog)
       .addDialog(
@@ -60,11 +58,10 @@ class MainDialog extends ComponentDialog {
     }
   }
 
-  // First step in the waterfall dialog. Prompts the user for a command.
+  // Primeiro passo do dialogo WaterFall
   async introStep(stepContext) {
     if (!this.luisRecognizer.isConfigured) {
-      const messageText =
-        'NOTE: LUIS is not configured. To enable all capabilities, add `LuisAppId`, `LuisAPIKey` and `LuisAPIHostName` to the .env file.';
+      const messageText = 'LUIS não está configurado';
       await stepContext.context.sendActivity(
         messageText,
         null,
@@ -95,17 +92,13 @@ class MainDialog extends ComponentDialog {
     const luisResult = await this.luisRecognizer.executeLuisQuery(
       stepContext.context
     );
+
     switch (LuisRecognizer.topIntent(luisResult)) {
       case 'BookFlight': {
         const fromEntities = this.luisRecognizer.getFromEntities(luisResult);
         const toEntities = this.luisRecognizer.getToEntities(luisResult);
 
-        await this.showWarningForUnsupportedCities(
-          stepContext.context,
-          fromEntities,
-          toEntities
-        );
-
+        // Faz o reconhecimento da entidade
         bookingDetails.destination = toEntities.airport;
         bookingDetails.origin = fromEntities.airport;
         bookingDetails.travelDate = this.luisRecognizer.getTravelDate(
@@ -117,21 +110,10 @@ class MainDialog extends ComponentDialog {
         return await stepContext.beginDialog('bookingDialog', bookingDetails);
       }
 
-      case 'GetWeather': {
-        const getWeatherMessageText = 'Metodo ainda não implementado';
-        await stepContext.context.sendActivity(
-          getWeatherMessageText,
-          getWeatherMessageText,
-          InputHints.IgnoringInput
-        );
-        break;
-      }
-
       // Intenções ainda não cadastradas.
       default: {
-        const didntUnderstandMessageText = `Me desculpe, não entendi a pergunta...  (Intenção: ${LuisRecognizer.topIntent(
-          luisResult
-        )})`;
+        const didntUnderstandMessageText =
+          'Me desculpe, não entendi a pergunta...';
 
         await stepContext.context.sendActivity(
           didntUnderstandMessageText,
@@ -144,7 +126,7 @@ class MainDialog extends ComponentDialog {
     return await stepContext.next();
   }
 
-  // Mostrar um aviso para cidades nao suportadas.
+  // // Mostrar um aviso para cidades nao suportadas.
   // async showWarningForUnsupportedCities(context, fromEntities, toEntities) {
   //   const unsupportedCities = [];
   //   if (fromEntities.from && !fromEntities.airport) {

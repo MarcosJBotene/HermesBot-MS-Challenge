@@ -68,10 +68,6 @@ class BookingDialog extends CancelAndHelpDialog {
     return await stepContext.next(bookingDetails.origin);
   }
 
-  /**
-   * If a travel date has not been provided, prompt for one.
-   * This will use the DATE_RESOLVER_DIALOG.
-   */
   async travelDateStep(stepContext) {
     const bookingDetails = stepContext.options;
 

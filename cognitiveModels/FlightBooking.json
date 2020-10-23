@@ -1,37 +1,74 @@
 {
-  "luis_schema_version": "3.2.0",
-  "versionId": "0.1",
-  "name": "FlightBooking",
-  "desc": "Luis Model for CoreBot",
-  "culture": "en-us",
-  "tokenizerVersion": "1.0.0",
+  "luis_schema_version": "7.0.0",
   "intents": [
     {
-      "name": "BookFlight"
+      "name": "BookFlight",
+      "features": [
+        {
+          "modelName": "To",
+          "isRequired": false
+        },
+        {
+          "modelName": "From",
+          "isRequired": false
+        }
+      ]
     },
     {
-      "name": "Cancel"
+      "name": "Cancel",
+      "features": []
     },
     {
-      "name": "GetWeather"
+      "name": "GymOpeningDays",
+      "features": [
+        {
+          "modelName": "Open",
+          "isRequired": false
+        }
+      ]
     },
     {
-      "name": "None"
+      "name": "None",
+      "features": []
     }
   ],
-  "entities": [],
-  "composites": [
+  "entities": [
     {
       "name": "From",
-      "children": ["Airport"],
-      "roles": []
+      "children": [],
+      "roles": [],
+      "features": [
+        {
+          "modelName": "Airport",
+          "isRequired": false
+        }
+      ]
+    },
+    {
+      "name": "Open",
+      "children": [],
+      "roles": [],
+      "features": [
+        {
+          "modelName": "wordsOpen",
+          "isRequired": false
+        }
+      ]
     },
     {
       "name": "To",
-      "children": ["Airport"],
-      "roles": []
+      "children": [],
+      "roles": [],
+      "features": [
+        {
+          "modelName": "Airport",
+          "isRequired": false
+        }
+      ]
     }
   ],
+  "hierarchicals": [],
+  "composites": [],
   "closedLists": [
     {
       "name": "Airport",
@@ -58,33 +95,94 @@
         }
       ],
       "roles": []
+    },
+    {
+      "name": "wordsOpen",
+      "subLists": [
+        {
+          "canonicalForm": "Horarios",
+          "list": ["horários", "ahah"]
+        },
+        {
+          "canonicalForm": "Horario",
+          "list": ["horario"]
+        },
+        {
+          "canonicalForm": "Abre",
+          "list": ["abre"]
+        },
+        {
+          "canonicalForm": "Hoje",
+          "list": ["hoje"]
+        },
+        {
+          "canonicalForm": "Fechada",
+          "list": ["fechada"]
+        },
+        {
+          "canonicalForm": "Aberta",
+          "list": ["aberta"]
+        },
+        {
+          "canonicalForm": "Dias",
+          "list": ["dias"]
+        }
+      ],
+      "roles": []
     }
   ],
-  "patternAnyEntities": [],
-  "regex_entities": [],
   "prebuiltEntities": [
     {
       "name": "datetimeV2",
       "roles": []
     }
   ],
-  "model_features": [],
-  "regex_features": [],
-  "patterns": [],
   "utterances": [
     {
-      "text": "book a flight",
-      "intent": "BookFlight",
-      "entities": []
+      "text": "a academia está aberta hoje?",
+      "intent": "GymOpeningDays",
+      "entities": [
+        {
+          "entity": "Open",
+          "startPos": 16,
+          "endPos": 21,
+          "children": []
+        },
+        {
+          "entity": "Open",
+          "startPos": 23,
+          "endPos": 26,
+          "children": []
+        }
+      ]
+    },
+    {
+      "text": "a academia está fechada hoje?",
+      "intent": "GymOpeningDays",
+      "entities": [
+        {
+          "entity": "Open",
+          "startPos": 16,
+          "endPos": 22,
+          "children": []
+        },
+        {
+          "entity": "Open",
+          "startPos": 24,
+          "endPos": 27,
+          "children": []
+        }
+      ]
     },
     {
       "text": "book a flight from new york",
       "intent": "BookFlight",
       "entities": [
         {
-          "entity": "From",
+          "entity": "To",
           "startPos": 19,
-          "endPos": 26
+          "endPos": 26,
+          "children": []
         }
       ]
     },
@@ -93,9 +191,10 @@
       "intent": "BookFlight",
       "entities": [
         {
-          "entity": "From",
+          "entity": "To",
           "startPos": 19,
-          "endPos": 25
+          "endPos": 25,
+          "children": []
         }
       ]
     },
@@ -114,14 +213,16 @@
       "intent": "BookFlight",
       "entities": [
         {
-          "entity": "From",
+          "entity": "To",
           "startPos": 17,
-          "endPos": 22
+          "endPos": 22,
+          "children": []
         },
         {
-          "entity": "To",
+          "entity": "From",
           "startPos": 27,
-          "endPos": 31
+          "endPos": 31,
+          "children": []
         }
       ]
     },
@@ -132,7 +233,8 @@
         {
           "entity": "To",
           "startPos": 15,
-          "endPos": 20
+          "endPos": 20,
+          "children": []
         }
       ]
     },
@@ -141,14 +243,16 @@
       "intent": "BookFlight",
       "entities": [
         {
-          "entity": "From",
+          "entity": "To",
           "startPos": 22,
-          "endPos": 27
+          "endPos": 27,
+          "children": []
         },
         {
-          "entity": "To",
+          "entity": "From",
           "startPos": 32,
-          "endPos": 36
+          "endPos": 36,
+          "children": []
         }
       ]
     },
@@ -179,7 +283,8 @@
         {
           "entity": "To",
           "startPos": 10,
-          "endPos": 14
+          "endPos": 14,
+          "children": []
         }
       ]
     },
@@ -190,39 +295,14 @@
         {
           "entity": "To",
           "startPos": 10,
-          "endPos": 14
+          "endPos": 14,
+          "children": []
         },
         {
           "entity": "From",
           "startPos": 21,
-          "endPos": 26
-        }
-      ]
-    },
-    {
-      "text": "fly from berlin to paris on may 5th",
-      "intent": "BookFlight",
-      "entities": [
-        {
-          "entity": "From",
-          "startPos": 9,
-          "endPos": 14
-        },
-        {
-          "entity": "To",
-          "startPos": 19,
-          "endPos": 23
-        }
-      ]
-    },
-    {
-      "text": "go to paris",
-      "intent": "BookFlight",
-      "entities": [
-        {
-          "entity": "To",
-          "startPos": 6,
-          "endPos": 10
+          "endPos": 26,
+          "children": []
         }
       ]
     },
@@ -231,14 +311,16 @@
       "intent": "BookFlight",
       "entities": [
         {
-          "entity": "From",
+          "entity": "To",
           "startPos": 11,
-          "endPos": 15
+          "endPos": 15,
+          "children": []
         },
         {
-          "entity": "To",
+          "entity": "From",
           "startPos": 20,
-          "endPos": 25
+          "endPos": 25,
+          "children": []
         }
       ]
     },
@@ -253,18 +335,182 @@
       "entities": []
     },
     {
+      "text": "quais os dias da semana que a academia está aberta?",
+      "intent": "GymOpeningDays",
+      "entities": [
+        {
+          "entity": "Open",
+          "startPos": 9,
+          "endPos": 12,
+          "children": []
+        },
+        {
+          "entity": "Open",
+          "startPos": 44,
+          "endPos": 49,
+          "children": []
+        }
+      ]
+    },
+    {
+      "text": "quais os dias de funcionamento da academia?",
+      "intent": "GymOpeningDays",
+      "entities": [
+        {
+          "entity": "Open",
+          "startPos": 9,
+          "endPos": 12,
+          "children": []
+        }
+      ]
+    },
+    {
+      "text": "quais os dias que a academia abre?",
+      "intent": "GymOpeningDays",
+      "entities": [
+        {
+          "entity": "Open",
+          "startPos": 9,
+          "endPos": 12,
+          "children": []
+        },
+        {
+          "entity": "Open",
+          "startPos": 29,
+          "endPos": 32,
+          "children": []
+        }
+      ]
+    },
+    {
+      "text": "quais os dias que a academia está aberta?",
+      "intent": "GymOpeningDays",
+      "entities": [
+        {
+          "entity": "Open",
+          "startPos": 9,
+          "endPos": 12,
+          "children": []
+        },
+        {
+          "entity": "Open",
+          "startPos": 34,
+          "endPos": 39,
+          "children": []
+        }
+      ]
+    },
+    {
+      "text": "quais são os horários de funcionamento da academia?",
+      "intent": "GymOpeningDays",
+      "entities": [
+        {
+          "entity": "Open",
+          "startPos": 13,
+          "endPos": 20,
+          "children": []
+        }
+      ]
+    },
+    {
+      "text": "quando a academia abre?",
+      "intent": "GymOpeningDays",
+      "entities": [
+        {
+          "entity": "Open",
+          "startPos": 18,
+          "endPos": 21,
+          "children": []
+        }
+      ]
+    },
+    {
+      "text": "quando abre?",
+      "intent": "GymOpeningDays",
+      "entities": [
+        {
+          "entity": "Open",
+          "startPos": 7,
+          "endPos": 10,
+          "children": []
+        }
+      ]
+    },
+    {
+      "text": "que dias a academia está aberta?",
+      "intent": "GymOpeningDays",
+      "entities": [
+        {
+          "entity": "Open",
+          "startPos": 4,
+          "endPos": 7,
+          "children": []
+        },
+        {
+          "entity": "Open",
+          "startPos": 25,
+          "endPos": 30,
+          "children": []
+        }
+      ]
+    },
+    {
+      "text": "que dias da semana a academia está aberta?",
+      "intent": "GymOpeningDays",
+      "entities": [
+        {
+          "entity": "Open",
+          "startPos": 4,
+          "endPos": 7,
+          "children": []
+        },
+        {
+          "entity": "Open",
+          "startPos": 35,
+          "endPos": 40,
+          "children": []
+        }
+      ]
+    },
+    {
+      "text": "ta aberta?",
+      "intent": "GymOpeningDays",
+      "entities": [
+        {
+          "entity": "Open",
+          "startPos": 3,
+          "endPos": 8,
+          "children": []
+        }
+      ]
+    },
+    {
+      "text": "ta fechada ?",
+      "intent": "GymOpeningDays",
+      "entities": [
+        {
+          "entity": "Open",
+          "startPos": 3,
+          "endPos": 9,
+          "children": []
+        }
+      ]
+    },
+    {
       "text": "travel from new york to paris",
       "intent": "BookFlight",
       "entities": [
         {
-          "entity": "From",
+          "entity": "To",
           "startPos": 12,
-          "endPos": 19
+          "endPos": 19,
+          "children": []
         },
         {
-          "entity": "To",
+          "entity": "From",
           "startPos": 24,
-          "endPos": 28
+          "endPos": 28,
+          "children": []
         }
       ]
     },
@@ -275,40 +521,10 @@
         {
           "entity": "To",
           "startPos": 10,
-          "endPos": 17
+          "endPos": 17,
+          "children": []
         }
       ]
-    },
-    {
-      "text": "travel to paris",
-      "intent": "BookFlight",
-      "entities": [
-        {
-          "entity": "To",
-          "startPos": 10,
-          "endPos": 14
-        }
-      ]
-    },
-    {
-      "text": "what's the forecast for this friday?",
-      "intent": "GetWeather",
-      "entities": []
-    },
-    {
-      "text": "what's the weather like for tomorrow",
-      "intent": "GetWeather",
-      "entities": []
-    },
-    {
-      "text": "what's the weather like in new york",
-      "intent": "GetWeather",
-      "entities": []
-    },
-    {
-      "text": "what's the weather like?",
-      "intent": "GetWeather",
-      "entities": []
     },
     {
       "text": "winter is coming",
@@ -316,5 +532,15 @@
       "entities": []
     }
   ],
+  "versionId": "0.1",
+  "name": "HermesBot-MS",
+  "desc": "Luis Model for CoreBot",
+  "culture": "en-us",
+  "tokenizerVersion": "1.0.0",
+  "patternAnyEntities": [],
+  "regex_entities": [],
+  "phraselists": [],
+  "regex_features": [],
+  "patterns": [],
   "settings": []
 }

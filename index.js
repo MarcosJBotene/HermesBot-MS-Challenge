@@ -21,7 +21,7 @@ const {
 const { DialogAndWelcomeBot } = require('./bots/dialogAndWelcomeBot');
 const { MainDialog } = require('./dialogs/mainDialog');
 
-// the bot's booking dialog
+// Dialogos do Bot
 const { BookingDialog } = require('./dialogs/bookingDialog');
 const BOOKING_DIALOG = 'bookingDialog';
 
@@ -62,7 +62,7 @@ const luisConfig = {
 
 const luisRecognizer = new FlightBookingRecognizer(luisConfig);
 
-// Cria o Dialogo Principal.
+// Cria os Dialogos Principais.
 const bookingDialog = new BookingDialog(BOOKING_DIALOG);
 const dialog = new MainDialog(luisRecognizer, bookingDialog);
 const bot = new DialogAndWelcomeBot(conversationState, userState, dialog);
