@@ -11,25 +11,22 @@ const {
 const MAIN_WATERFALL_DIALOG = 'mainWaterfallDialog';
 
 class MainDialog extends ComponentDialog {
-  constructor(luisRecognizer, bookingDialog, gymOpeningDaysDialog) {
+  constructor(luisRecognizer, schedulingDialog) {
     super('MainDialog');
 
     if (!luisRecognizer)
       throw new Error(
         "[MainDialog]: Missing parameter 'luisRecognizer' is required"
       );
+
+    // Se o dialogo não existir.
+    if (!schedulingDialog)
+      throw new Error("Missing parameter 'schedulingDialog' is required");
+
     this.luisRecognizer = luisRecognizer;
 
-    // Se o dialogo não existir.
-    if (!bookingDialog)
-      throw new Error("Missing parameter 'bookingDialog' is required");
-
-    if (!gymOpeningDaysDialog)
-      throw new Error("Missing parameter 'gymOpeningDaysDialog' is required");
-
-    // Se o dialogo não existir.
     this.addDialog(new TextPrompt('TextPrompt'))
-      .addDialog(gymOpeningDaysDialog)
+      .addDialog(schedulingDialog)
       .addDialog(
         new WaterfallDialog(MAIN_WATERFALL_DIALOG, [
           this.introStep.bind(this),
@@ -76,17 +73,11 @@ class MainDialog extends ComponentDialog {
   }
 
   async actStep(stepContext) {
-    const bookingDetails = {};
-    const gymOpeningDaysDetails = {};
-
-    if (!this.luisRecognizer.isConfigured) {
-      return await stepContext.beginDialog('bookingDialog', bookingDetails);
-    }
-
+    const schedulingDetails = {};
     if (!this.luisRecognizer.isConfigured) {
       return await stepContext.beginDialog(
-        'gymOpeningDaysDialog',
-        gymOpeningDaysDetails
+        'schedulingDialog',
+        schedulingDetails
       );
     }
 
@@ -95,34 +86,22 @@ class MainDialog extends ComponentDialog {
     );
 
     switch (LuisRecognizer.topIntent(luisResult)) {
-      case 'BookFlight': {
-        const fromEntities = this.luisRecognizer.getFromEntities(luisResult);
-        const toEntities = this.luisRecognizer.getToEntities(luisResult);
-
-        // Faz o reconhecimento da entidade
-        bookingDetails.destination = toEntities.airport;
-        bookingDetails.origin = fromEntities.airport;
-
-        console.log('Detalhes Extraidos:', JSON.stringify(bookingDetails));
-
-        return await stepContext.beginDialog('bookingDialog', bookingDetails);
-      }
-
-      case 'GymOpeningDays': {
-        const isGymOpenEntities = this.luisRecognizer.getGymIsOpenEntities(
+      case 'Scheduling': {
+        const startTimeEntities = this.luisRecognizer.getStartTimeEntities(
+          luisResult
+        );
+        const endTimeEntities = this.luisRecognizer.getEndTimeEntities(
           luisResult
         );
 
-        gymOpeningDaysDetails = isGymOpenEntities.keyWordsDays;
+        schedulingDetails.startTime = startTimeEntities.datetimeV2;
+        schedulingDetails.endTime = endTimeEntities.datetimeV2;
 
-        console.log(
-          'Detalhes Extraidos:',
-          JSON.stringify(gymOpeningDaysDetails)
-        );
+        console.log('Detalhes Extraidos:', JSON.stringify(schedulingDetails));
 
         return await stepContext.beginDialog(
-          'gymOpeningDaysDialog',
-          gymOpeningDaysDetails
+          'schedulingDialog',
+          schedulingDetails
         );
       }
 
@@ -146,7 +125,7 @@ class MainDialog extends ComponentDialog {
   async finalStep(stepContext) {
     if (stepContext.result) {
       const result = stepContext.result;
-      const msg = `I have you booked to ${result.destination} from ${result.origin}.`;
+      const msg = `Horario marcado dás ${result.startTime} até às ${result.endTime} horas.`;
       await stepContext.context.sendActivity(
         msg,
         msg,

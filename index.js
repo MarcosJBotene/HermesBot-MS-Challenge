@@ -10,25 +10,16 @@ const {
   UserState,
 } = require('botbuilder');
 
-// Recognizers
 const {
-  FlightBookingRecognizer,
-} = require('./dialogs/Booking/flightBookingRecognizer');
-const {
-  GymOpeningDaysRecognizer,
-} = require('./dialogs/GymOpeningDays/GymOpeningDaysRecognizer');
+  SchedulingRecognizer,
+} = require('./dialogs/Scheduling/SchedulingRecognizer');
 
 const { DialogAndWelcomeBot } = require('./bots/dialogAndWelcomeBot');
 const { MainDialog } = require('./dialogs/mainDialog');
 
 // Dialogos
-const { BookingDialog } = require('./dialogs/Booking/Booking');
-const {
-  GymOpeningDaysDialog,
-} = require('./dialogs/GymOpeningDays/GymOpeningDays');
-
-const BOOKING_DIALOG = 'bookingDialog';
-const GYM_OPENING_DAYS_DIALOG = 'gymOpeningDaysDialog';
+const { SchedulingDialog } = require('./dialogs/Scheduling/SchedulingDialog');
+const SCHEDULING_DIALOG = 'schedulingDialog';
 
 // Adaptador
 const adapter = new BotFrameworkAdapter({
@@ -36,7 +27,7 @@ const adapter = new BotFrameworkAdapter({
   appPassword: process.env.MicrosoftAppPassword,
 });
 
-// Procura por Erros.
+// Retorna Erros da Aplicação.
 const onTurnErrorHandler = async (context, error) => {
   console.error(`\n [onTurnError] unhandled error: ${error}`);
 
@@ -57,7 +48,6 @@ const memoryStorage = new MemoryStorage();
 const conversationState = new ConversationState(memoryStorage);
 const userState = new UserState(memoryStorage);
 
-// Se o LUIS estiver configurado, passa para os Recognizers.
 const { LuisAppId, LuisAPIKey, LuisAPIHostName } = process.env;
 const luisConfig = {
   applicationId: LuisAppId,
@@ -65,18 +55,10 @@ const luisConfig = {
   endpoint: `https://${LuisAPIHostName}`,
 };
 
-const luisRecognizerBooking = new FlightBookingRecognizer(luisConfig);
-const luisRecognizerGymOpeningDays = new GymOpeningDaysRecognizer(luisConfig);
+const luisRecognizer = new SchedulingRecognizer(luisConfig);
 
-const bookingDialog = new BookingDialog(BOOKING_DIALOG);
-const gymOpeningDaysDialog = new GymOpeningDaysDialog(GYM_OPENING_DAYS_DIALOG);
-const dialog = new MainDialog(
-  luisRecognizerBooking,
-  luisRecognizerGymOpeningDays,
-  bookingDialog,
-  gymOpeningDaysDialog
-);
-
+const schedulingDialog = new SchedulingDialog(SCHEDULING_DIALOG);
+const dialog = new MainDialog(luisRecognizer, schedulingDialog);
 const bot = new DialogAndWelcomeBot(conversationState, userState, dialog);
 
 // Cria o Server
@@ -88,5 +70,17 @@ server.listen(process.env.port || process.env.PORT || 3978, function () {
 server.post('/api/messages', (req, res) => {
   adapter.processActivity(req, res, async (turnContext) => {
     await bot.run(turnContext);
+  });
+});
+
+server.on('upgrade', (req, socket, head) => {
+  const streamingAdapter = new BotFrameworkAdapter({
+    appId: process.env.MicrosoftAppId,
+    appPassword: process.env.MicrosoftAppPassword,
+  });
+  streamingAdapter.onTurnError = onTurnErrorHandler;
+
+  streamingAdapter.useWebSocket(req, socket, head, async (context) => {
+    await bot.run(context);
   });
 });

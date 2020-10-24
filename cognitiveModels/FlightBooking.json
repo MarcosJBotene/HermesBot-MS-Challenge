@@ -2,66 +2,46 @@
   "luis_schema_version": "7.0.0",
   "intents": [
     {
-      "name": "BookFlight",
-      "features": [
-        {
-          "modelName": "To",
-          "isRequired": false
-        },
-        {
-          "modelName": "From",
-          "isRequired": false
-        }
-      ]
-    },
-    {
       "name": "Cancel",
       "features": []
     },
     {
-      "name": "GymOpeningDays",
+      "name": "None",
+      "features": []
+    },
+    {
+      "name": "Scheduling",
       "features": [
         {
-          "modelName": "GymIsOpen",
+          "modelName": "StartTime",
+          "isRequired": false
+        },
+        {
+          "modelName": "EndTime",
           "isRequired": false
         }
       ]
-    },
-    {
-      "name": "None",
-      "features": []
     }
   ],
   "entities": [
     {
-      "name": "From",
+      "name": "EndTime",
       "children": [],
       "roles": [],
       "features": [
         {
-          "modelName": "Airport",
+          "modelName": "datetimeV2",
           "isRequired": false
         }
       ]
     },
     {
-      "name": "GymIsOpen",
+      "name": "StartTime",
       "children": [],
       "roles": [],
       "features": [
         {
-          "modelName": "KeyWordsDays",
-          "isRequired": false
-        }
-      ]
-    },
-    {
-      "name": "To",
-      "children": [],
-      "roles": [],
-      "features": [
-        {
-          "modelName": "Airport",
+          "modelName": "datetimeV2",
           "isRequired": false
         }
       ]
@@ -69,112 +49,46 @@
   ],
   "hierarchicals": [],
   "composites": [],
-  "closedLists": [
+  "closedLists": [],
+  "prebuiltEntities": [
     {
-      "name": "Airport",
-      "subLists": [
-        {
-          "canonicalForm": "Paris",
-          "list": ["paris"]
-        },
-        {
-          "canonicalForm": "London",
-          "list": ["london"]
-        },
-        {
-          "canonicalForm": "Berlin",
-          "list": ["berlin"]
-        },
-        {
-          "canonicalForm": "New York",
-          "list": ["new york"]
-        },
-        {
-          "canonicalForm": "Seattle",
-          "list": ["seattle"]
-        }
-      ],
-      "roles": []
-    },
-    {
-      "name": "KeyWordsDays",
-      "subLists": [
-        {
-          "canonicalForm": "Horario",
-          "list": ["horario"]
-        },
-        {
-          "canonicalForm": "Horarios",
-          "list": ["horarios"]
-        },
-        {
-          "canonicalForm": "Hoje",
-          "list": ["hoje"]
-        },
-        {
-          "canonicalForm": "Fechada",
-          "list": ["fechada"]
-        },
-        {
-          "canonicalForm": "Aberta",
-          "list": ["aberta"]
-        },
-        {
-          "canonicalForm": "Dias",
-          "list": ["dias"]
-        },
-        {
-          "canonicalForm": "Abre",
-          "list": ["abre"]
-        },
-        {
-          "canonicalForm": "Fecha",
-          "list": ["fecha"]
-        }
-      ],
+      "name": "datetimeV2",
       "roles": []
     }
   ],
-  "prebuiltEntities": [],
   "utterances": [
     {
-      "text": "abre hoje?",
-      "intent": "GymOpeningDays",
+      "text": "09:00 ás 11:00 por favor",
+      "intent": "Scheduling",
       "entities": [
         {
-          "entity": "GymIsOpen",
+          "entity": "StartTime",
           "startPos": 0,
-          "endPos": 3,
+          "endPos": 4,
           "children": []
         },
         {
-          "entity": "GymIsOpen",
-          "startPos": 5,
-          "endPos": 8,
+          "entity": "EndTime",
+          "startPos": 9,
+          "endPos": 13,
           "children": []
         }
       ]
     },
     {
-      "text": "book a flight from new york",
-      "intent": "BookFlight",
+      "text": "17:00 as 19:00 horas",
+      "intent": "Scheduling",
       "entities": [
         {
-          "entity": "To",
-          "startPos": 19,
-          "endPos": 26,
+          "entity": "StartTime",
+          "startPos": 0,
+          "endPos": 4,
           "children": []
-        }
-      ]
-    },
-    {
-      "text": "book a flight from seattle",
-      "intent": "BookFlight",
-      "entities": [
+        },
         {
-          "entity": "To",
-          "startPos": 19,
-          "endPos": 25,
+          "entity": "EndTime",
+          "startPos": 9,
+          "endPos": 13,
           "children": []
         }
       ]
@@ -190,78 +104,36 @@
       "entities": []
     },
     {
-      "text": "book flight from london to paris on feb 14th",
-      "intent": "BookFlight",
-      "entities": [
-        {
-          "entity": "To",
-          "startPos": 17,
-          "endPos": 22,
-          "children": []
-        },
-        {
-          "entity": "From",
-          "startPos": 27,
-          "endPos": 31,
-          "children": []
-        }
-      ]
-    },
-    {
-      "text": "book flight to berlin on feb 14th",
-      "intent": "BookFlight",
-      "entities": [
-        {
-          "entity": "To",
-          "startPos": 15,
-          "endPos": 20,
-          "children": []
-        }
-      ]
-    },
-    {
-      "text": "book me a flight from london to paris",
-      "intent": "BookFlight",
-      "entities": [
-        {
-          "entity": "To",
-          "startPos": 22,
-          "endPos": 27,
-          "children": []
-        },
-        {
-          "entity": "From",
-          "startPos": 32,
-          "endPos": 36,
-          "children": []
-        }
-      ]
-    },
-    {
       "text": "bye",
       "intent": "Cancel",
       "entities": []
     },
     {
-      "text": "está aberta?",
-      "intent": "GymOpeningDays",
+      "text": "das 10:00 horas",
+      "intent": "Scheduling",
       "entities": [
         {
-          "entity": "GymIsOpen",
-          "startPos": 5,
-          "endPos": 10,
+          "entity": "StartTime",
+          "startPos": 4,
+          "endPos": 8,
           "children": []
         }
       ]
     },
     {
-      "text": "está fechada?",
-      "intent": "GymOpeningDays",
+      "text": "das 12:00 ás 14:00 horas",
+      "intent": "Scheduling",
       "entities": [
         {
-          "entity": "GymIsOpen",
-          "startPos": 5,
-          "endPos": 11,
+          "entity": "StartTime",
+          "startPos": 4,
+          "endPos": 8,
+          "children": []
+        },
+        {
+          "entity": "EndTime",
+          "startPos": 13,
+          "endPos": 17,
           "children": []
         }
       ]
@@ -277,91 +149,19 @@
       "entities": []
     },
     {
-      "text": "flight to paris",
-      "intent": "BookFlight",
+      "text": "gostaria que fosse das 18:00 ás 20:00 horas",
+      "intent": "Scheduling",
       "entities": [
         {
-          "entity": "To",
-          "startPos": 10,
-          "endPos": 14,
-          "children": []
-        }
-      ]
-    },
-    {
-      "text": "flight to paris from london on feb 14th",
-      "intent": "BookFlight",
-      "entities": [
-        {
-          "entity": "To",
-          "startPos": 10,
-          "endPos": 14,
+          "entity": "StartTime",
+          "startPos": 23,
+          "endPos": 27,
           "children": []
         },
         {
-          "entity": "From",
-          "startPos": 21,
-          "endPos": 26,
-          "children": []
-        }
-      ]
-    },
-    {
-      "text": "going from paris to berlin",
-      "intent": "BookFlight",
-      "entities": [
-        {
-          "entity": "To",
-          "startPos": 11,
-          "endPos": 15,
-          "children": []
-        },
-        {
-          "entity": "From",
-          "startPos": 20,
-          "endPos": 25,
-          "children": []
-        }
-      ]
-    },
-    {
-      "text": "hoje a academia abre?",
-      "intent": "GymOpeningDays",
-      "entities": [
-        {
-          "entity": "GymIsOpen",
-          "startPos": 0,
-          "endPos": 3,
-          "children": []
-        },
-        {
-          "entity": "GymIsOpen",
-          "startPos": 16,
-          "endPos": 19,
-          "children": []
-        }
-      ]
-    },
-    {
-      "text": "horario de funcionamento",
-      "intent": "GymOpeningDays",
-      "entities": [
-        {
-          "entity": "GymIsOpen",
-          "startPos": 0,
-          "endPos": 6,
-          "children": []
-        }
-      ]
-    },
-    {
-      "text": "horarios de funcionamento?",
-      "intent": "GymOpeningDays",
-      "entities": [
-        {
-          "entity": "GymIsOpen",
-          "startPos": 0,
-          "endPos": 7,
+          "entity": "EndTime",
+          "startPos": 32,
+          "endPos": 36,
           "children": []
         }
       ]
@@ -372,157 +172,31 @@
       "entities": []
     },
     {
-      "text": "quais os dias de funcionamento da academia?",
-      "intent": "GymOpeningDays",
+      "text": "queria que fosse das 15:00 ás 17:00 horas, por favor",
+      "intent": "Scheduling",
       "entities": [
         {
-          "entity": "GymIsOpen",
-          "startPos": 9,
-          "endPos": 12,
-          "children": []
-        }
-      ]
-    },
-    {
-      "text": "quais os dias que a academia abre?",
-      "intent": "GymOpeningDays",
-      "entities": [
-        {
-          "entity": "GymIsOpen",
-          "startPos": 9,
-          "endPos": 12,
+          "entity": "StartTime",
+          "startPos": 21,
+          "endPos": 25,
           "children": []
         },
         {
-          "entity": "GymIsOpen",
-          "startPos": 29,
-          "endPos": 32,
+          "entity": "EndTime",
+          "startPos": 30,
+          "endPos": 34,
           "children": []
         }
       ]
     },
     {
-      "text": "quais os horarios de funcionamento da academia?",
-      "intent": "GymOpeningDays",
+      "text": "quero iniciar as 17:30 da tarde.",
+      "intent": "Scheduling",
       "entities": [
         {
-          "entity": "GymIsOpen",
-          "startPos": 9,
-          "endPos": 16,
-          "children": []
-        }
-      ]
-    },
-    {
-      "text": "quando abre?",
-      "intent": "GymOpeningDays",
-      "entities": [
-        {
-          "entity": "GymIsOpen",
-          "startPos": 7,
-          "endPos": 10,
-          "children": []
-        }
-      ]
-    },
-    {
-      "text": "quando fecha?",
-      "intent": "GymOpeningDays",
-      "entities": [
-        {
-          "entity": "GymIsOpen",
-          "startPos": 7,
-          "endPos": 11,
-          "children": []
-        }
-      ]
-    },
-    {
-      "text": "ta aberta hoje?",
-      "intent": "GymOpeningDays",
-      "entities": [
-        {
-          "entity": "GymIsOpen",
-          "startPos": 3,
-          "endPos": 8,
-          "children": []
-        },
-        {
-          "entity": "GymIsOpen",
-          "startPos": 10,
-          "endPos": 13,
-          "children": []
-        }
-      ]
-    },
-    {
-      "text": "ta aberta?",
-      "intent": "GymOpeningDays",
-      "entities": [
-        {
-          "entity": "GymIsOpen",
-          "startPos": 3,
-          "endPos": 8,
-          "children": []
-        }
-      ]
-    },
-    {
-      "text": "ta fechada hoje?",
-      "intent": "GymOpeningDays",
-      "entities": [
-        {
-          "entity": "GymIsOpen",
-          "startPos": 3,
-          "endPos": 9,
-          "children": []
-        },
-        {
-          "entity": "GymIsOpen",
-          "startPos": 11,
-          "endPos": 14,
-          "children": []
-        }
-      ]
-    },
-    {
-      "text": "ta fechada?",
-      "intent": "GymOpeningDays",
-      "entities": [
-        {
-          "entity": "GymIsOpen",
-          "startPos": 3,
-          "endPos": 9,
-          "children": []
-        }
-      ]
-    },
-    {
-      "text": "travel from new york to paris",
-      "intent": "BookFlight",
-      "entities": [
-        {
-          "entity": "To",
-          "startPos": 12,
-          "endPos": 19,
-          "children": []
-        },
-        {
-          "entity": "From",
-          "startPos": 24,
-          "endPos": 28,
-          "children": []
-        }
-      ]
-    },
-    {
-      "text": "travel to new york",
-      "intent": "BookFlight",
-      "entities": [
-        {
-          "entity": "To",
-          "startPos": 10,
-          "endPos": 17,
+          "entity": "StartTime",
+          "startPos": 17,
+          "endPos": 21,
           "children": []
         }
       ]
