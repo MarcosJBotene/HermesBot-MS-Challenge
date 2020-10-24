@@ -94,14 +94,28 @@
       ]
     },
     {
-      "text": "book a hotel in new york",
-      "intent": "None",
-      "entities": []
+      "text": "18 : 00 horas",
+      "intent": "Scheduling",
+      "entities": [
+        {
+          "entity": "StartTime",
+          "startPos": 0,
+          "endPos": 6,
+          "children": []
+        }
+      ]
     },
     {
-      "text": "book a restaurant",
-      "intent": "None",
-      "entities": []
+      "text": "19 : 00 horas",
+      "intent": "Scheduling",
+      "entities": [
+        {
+          "entity": "StartTime",
+          "startPos": 0,
+          "endPos": 6,
+          "children": []
+        }
+      ]
     },
     {
       "text": "bye",
@@ -139,13 +153,18 @@
       ]
     },
     {
-      "text": "exit",
-      "intent": "Cancel",
+      "text": "detesto insetos",
+      "intent": "None",
       "entities": []
     },
     {
-      "text": "find an airport near me",
+      "text": "estou dormindo",
       "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "exit",
+      "intent": "Cancel",
       "entities": []
     },
     {
@@ -167,7 +186,7 @@
       ]
     },
     {
-      "text": "i'd like to rent a car",
+      "text": "não gosto de carne de porco",
       "intent": "None",
       "entities": []
     },
@@ -190,6 +209,11 @@
       ]
     },
     {
+      "text": "quero comer torta de bolacha",
+      "intent": "None",
+      "entities": []
+    },
+    {
       "text": "quero iniciar as 17:30 da tarde.",
       "intent": "Scheduling",
       "entities": [
@@ -200,11 +224,6 @@
           "children": []
         }
       ]
-    },
-    {
-      "text": "winter is coming",
-      "intent": "None",
-      "entities": []
     }
   ],
   "versionId": "0.1",

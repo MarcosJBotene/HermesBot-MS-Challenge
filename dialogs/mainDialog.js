@@ -63,7 +63,7 @@ class MainDialog extends ComponentDialog {
 
     const messageText = stepContext.options.restartMsg
       ? stepContext.options.restartMsg
-      : 'Em que eu posso ajudar?';
+      : 'Para marcar um horário, escreva: "18 : 00", para desbloquear o diálogo.';
     const promptMessage = MessageFactory.text(
       messageText,
       messageText,
@@ -96,8 +96,6 @@ class MainDialog extends ComponentDialog {
 
         schedulingDetails.startTime = startTimeEntities.datetimeV2;
         schedulingDetails.endTime = endTimeEntities.datetimeV2;
-
-        console.log('Detalhes Extraidos:', JSON.stringify(schedulingDetails));
 
         return await stepContext.beginDialog(
           'schedulingDialog',

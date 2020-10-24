@@ -28,7 +28,7 @@ class SchedulingRecognizer {
       startTimeValue = result.entities.$instance.StartTime[0].text;
     }
     if (startTimeValue && result.entities.StartTime[0].datetimeV2) {
-      startTimeHourValue = result.entities.StartTime[0].datetimeV2[0];
+      startTimeHourValue = result.entities.StartTime[0].datetimeV2[0][0];
     }
 
     return { startTime: startTimeValue, datetimeV2: startTimeHourValue };
@@ -42,7 +42,7 @@ class SchedulingRecognizer {
     }
 
     if (endTimeValue && result.entities.EndTime[0].datetimeV2) {
-      endTimeHourValue = result.entities.EndTime[0].datetimeV2[0];
+      endTimeHourValue = result.entities.EndTime[0].datetimeV2[0][0];
     }
 
     return { endTime: endTimeValue, datetimeV2: endTimeHourValue };

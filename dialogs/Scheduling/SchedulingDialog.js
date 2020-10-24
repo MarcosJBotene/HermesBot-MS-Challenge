@@ -31,7 +31,7 @@ class SchedulingDialog extends CancelAndHelpDialog {
   async startTimeStep(stepContext) {
     const schedulingDetails = stepContext.options;
 
-    if (!schedulingDetails.startTime) {
+    if (schedulingDetails.startTime === schedulingDetails.startTime) {
       const messageText = 'Qual o Horario de Inicio?';
       const msg = MessageFactory.text(
         messageText,
